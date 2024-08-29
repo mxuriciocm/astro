@@ -8,19 +8,31 @@ Ejemplo
 En el siguiente ejemplo, queremos mostrar la hora actual. En la primera parte del código, el JavaScript está directamente incrustado en el HTML, lo cual funcionará correctamente en el servidor, pero dejará de funcionar una vez la página esté desplegada. Por otro lado, el código dentro de la etiqueta `<script>` seguirá funcionando sin problemas en el entorno de producción.
 
 ```html
-<p> Momento actual: {new Date().toLocaleTimeString()} </p>
-<p id="current-time"> Momento actual real:</p>
-
+<p>Momento actual: {new Date().toLocaleTimeString()}</p>
+<p id="current-time">Momento actual real:</p>
 
 <script>
-      const currentTime: string = new Date().toLocaleTimeString();
-      const currentTimeElement = document.querySelector(
-        "#current-time"
-      ) as HTMLParagraphElement;
-      currentTimeElement.innerText = `Momento actual real: ${currentTime}`;
+  const currentTime: string = new Date().toLocaleTimeString();
+  const currentTimeElement = document.querySelector(
+    "#current-time"
+  ) as HTMLParagraphElement;
+  currentTimeElement.innerText = `Momento actual real: ${currentTime}`;
 </script>
 ```
 
 Al desplegar la aplicación, observarás que el primer fragmento de código (Server Only) ya no actualiza en tiempo real, mientras que el segundo fragmento (Client-side Rendering) continúa renderizando correctamente en el cliente.
 
 ![alt text](image.png)
+
+## Navegación entre páginas
+
+Astro utiliza enrutamiento basado en archivos para generar las URLs finales según el contenido de la carpeta `src/pages/`.
+Astro usa elementos HTML estándar `<a>` para navegar entre rutas.
+
+```html
+<nav>
+  <a href="/">Home Page</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact Page</a>
+</nav>
+```
