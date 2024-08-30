@@ -51,6 +51,7 @@ const { text, onClick } = Astro.props;
 ---
 <button onClick={onClick}>{text}</button>
 ```
+
 En este ejemplo, text y onClick son props que se pasan al componente. Luego, al usar el componente, puedes pasarle valores para esas props:
 
 ```js
@@ -61,6 +62,7 @@ import Button from './components/Button.astro';
 <Button text="Click me" onClick={() => alert('Button clicked!')} />
 
 ```
+
 ## Layouts
 
 Los layouts en Astro son una forma especial de componentes que proporcionan una estructura común para varias páginas. Por ejemplo, si deseas que todas las páginas de tu sitio compartan la misma cabecera, pie de página, o estilos, puedes definir un layout y aplicarlo a tus páginas.
@@ -102,3 +104,63 @@ import Layout from '../layouts/Layout.astro'
 <Layout title="About" name="About">
 </Layout>
 ```
+
+## Estilos
+
+Estilizar un componente en Astro es tan fácil como agregar una etiqueta `<style>` directamente dentro del componente o layout. Astro detectará automáticamente el CSS dentro de esta etiqueta y lo aplicará al componente correspondiente.
+
+Las reglas de CSS dentro de un bloque `<style>` en Astro tienen alcance local de forma predeterminada. Esto significa que los estilos solo se aplicarán a los elementos dentro del mismo componente, evitando que afecten a otros componentes del proyecto.
+
+Si necesitas aplicar estilos globales que afecten a todo el proyecto, puedes usar el atributo `is:global` en la etiqueta `<style>`. Los estilos definidos de esta manera se aplicarán a todos los elementos de la página, independientemente del componente en el que se encuentren.
+
+```js
+<style>
+  /* Estilos locales, solo aplican al componente */
+  .btn {
+    background-color: blue;
+    color: white;
+  }
+</style>
+
+<style is:global>
+  /* Estilos globales, aplican a todo el proyecto */
+  body {
+    font-family: Arial, sans-serif;
+  }
+</style>
+```
+
+## View Transitions
+
+Las View transitions son una forma de controlar lo que sucede cuando los visitantes navegan entre páginas en tu sitio. La API de View Transitions de Astro te permite agregar funciones opcionales de navegación, como transiciones suaves entre páginas y animaciones, controlar la pila de historial del navegador de las páginas visitadas y evitar actualizaciones completas de la página para persistir algunos elementos y el estado de la página mientras se actualiza el contenido mostrado.
+
+Para utilizar las view transitions, importa y añade el componente `<ViewTransitions />` al `<head>` de la plantilla de tu página.
+
+```js
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{title}</title>
+  <ViewTransitions />
+</head>
+```
+
+Esto permitirá que el sitio utilice transiciones suaves entre páginas, mejorando la experiencia del usuario al navegar.
+
+## Página 404
+
+Para crear una página de error 404 personalizada, puedes crear un archivo `404.astro` o `404.md` en la carpeta `src/pages/`. Esto generará una página `404.html` que la mayoría de los servicios de despliegue encontrarán y utilizarán para manejar errores 404 (página no encontrada).
+
+```js
+---
+// Ejemplo de contenido para una página 404
+---
+
+<h1>404 - Página no encontrada</h1>
+<p>Lo sentimos, pero la página que buscas no existe.</p>
+<a href="/">Volver al inicio</a>
+```
+
+Esto asegurará que los usuarios que intenten acceder a una URL inexistente en el sitio vean una página de error amigable y personalizada.
