@@ -164,3 +164,39 @@ Para crear una página de error 404 personalizada, puedes crear un archivo `404.
 ```
 
 Esto asegurará que los usuarios que intenten acceder a una URL inexistente en el sitio vean una página de error amigable y personalizada.
+
+## Páginas Dinámicas
+
+En Astro, puedes crear una página dinámica utilizando un archivo con el formato `[name].astro` dentro de la carpeta `src/pages/`. Este archivo generará una página que espera un argumento dinámico, como name, desde la URL.
+
+El archivo `[name].astro` dentro de `src/pages/` permitirá capturar el parámetro name de la URL.
+
+Para que Astro pueda generar las rutas dinámicas, es necesario definir y exportar una función `getStaticPaths`. Esta función debe devolver un array de rutas posibles (params) y los datos (props) que se pasarán a la página.
+
+```js
+export const getStaticPaths = (async () => {
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  const { results } = (await response.json()) as PokemonListResponse;
+
+  return results.map(({ name, url }) => ({
+    params: { name: name },  // Parámetro dinámico en la URL
+    props: { name: name, url: url },  // Propiedades que se pasan a la página
+  }));
+}) satisfies GetStaticPaths;
+
+```
+
+## Estilos Condicionales (class:list)
+
+Astro proporciona una herramienta útil llamada `class:list`, que permite aplicar clases de forma condicional a los elementos HTML, basado en ciertas condiciones lógicas.
+
+El atributo `class:list` actúa de manera similar al atributo `class`, pero permite condicionar la aplicación de clases en función de tus necesidades:
+```js
+<span class:list={["capitalize", { "text-3xl": isBig }]}>
+  #{id}
+  {name}
+</span>
+```
+- "capitalize": Esta clase se aplicará de manera incondicional.
+
+- "text-3xl": isBig: Si la condición isBig se evalúa como true, se aplicará la clase text-3xl.

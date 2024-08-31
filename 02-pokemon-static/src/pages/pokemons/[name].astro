@@ -1,0 +1,35 @@
+---
+import PokemonCard from "../../components/PokemonCard.astro";
+import Layout from "../../layouts/Layout.astro";
+
+import type { PokemonListResponse } from "../../interfaces/pokemon-list.response";
+import type { GetStaticPaths } from "astro";
+
+const { name } = Astro.params;
+const { url } = Astro.props;
+
+export const getStaticPaths = (async () => {
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  const { results } = (await response.json()) as PokemonListResponse;
+
+  return results.map(({name, url}) => ({
+    params: { name: name },
+    props: { name: name, url: url },
+  }));
+}) satisfies GetStaticPaths;
+
+const id = url.split("/").at(-2);
+const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
+---
+
+<Layout title="Lista de Pokemons">
+  <section class="mt-10 mx-10 flex flex-col justify-center items-center">
+    <div>
+      <a href="/">Regresar</a>
+      <h1 class="text-3xl pt-4 capitalize">{name}</h1>
+    </div>
+
+    <PokemonCard name={name} url={url} isBig={true} />
+    <audio controls src={audioSrc}></audio>
+  </section>
+</Layout>
