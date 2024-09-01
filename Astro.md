@@ -191,12 +191,80 @@ export const getStaticPaths = (async () => {
 Astro proporciona una herramienta útil llamada `class:list`, que permite aplicar clases de forma condicional a los elementos HTML, basado en ciertas condiciones lógicas.
 
 El atributo `class:list` actúa de manera similar al atributo `class`, pero permite condicionar la aplicación de clases en función de tus necesidades:
+
 ```js
 <span class:list={["capitalize", { "text-3xl": isBig }]}>
   #{id}
   {name}
 </span>
 ```
+
 - "capitalize": Esta clase se aplicará de manera incondicional.
 
 - "text-3xl": isBig: Si la condición isBig se evalúa como true, se aplicará la clase text-3xl.
+
+## View Transitions
+
+Astro proporciona una herramienta útil llamada View Transitions, que permite agregar transiciones suaves y animaciones entre páginas para mejorar la experiencia de navegación.
+
+Para activar las View Transitions en tu proyecto de Astro, debes importar el componente `<ViewTransitions>` y colocarlo dentro de la etiqueta `<head>` en tu archivo principal de HTML. Una vez hecho esto, las transiciones estarán activas de forma automática.
+
+```js
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ViewTransitions></ViewTransitions>
+  </head>
+</html>
+```
+
+Para definir las animaciones entre vistas, debes utilizar el atributo transition:name={name} en los elementos que deseas animar. Este atributo actúa como una clase con un identificador único, que permite a Astro entender y aplicar correctamente las transiciones.
+
+```js
+<img transition:name={`${name}-image`}>
+```
+
+## Paginación Estática (`paginate()`)
+
+Astro proporciona una función útil llamada paginate() que permite dividir grandes conjuntos de datos en páginas más pequeñas y manejables. Esto es especialmente útil para blogs, listas de productos, o cualquier otro contenido que necesite ser paginado.
+Para utilizar la función `paginate()`, primero debes importar la función desde el paquete de Astro. Luego, puedes definir la cantidad de elementos por página y pasar el conjunto de datos que deseas paginar.
+
+```js
+import { paginate } from "astro:content";
+
+const allPosts = await getCollection("posts");
+const { pages } = paginate(allPosts, { pageSize: 10 });
+```
+
+## Path Alias
+
+Astro permite definir alias de rutas para simplificar la importación de módulos y componentes en tu proyecto. Esto es especialmente útil para evitar rutas relativas largas y confusas.
+Para configurar alias de rutas, debes modificar el archivo `tsconfig.json` o `jsconfig.json` en la raíz de tu proyecto.
+
+```js
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@pages/*": ["src/pages/*"]
+    }
+  }
+}
+```
+
+Una vez configurados los alias, puedes utilizarlos en tus archivos de Astro para importar módulos y componentes de manera más sencilla.
+
+```js
+---
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import Layout from '@layouts/Layout.astro';
+---
+
+```

@@ -15,11 +15,12 @@ const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprit
   class="rounded flex flex-col justify-center items-center p-2"
 >
   <img
+    transition:name={`${name}-image`}
     class:list={[{ "h-26 w-26": isBig, "h-50 w-50": !isBig }]}
     src={imageSrc}
     alt={name}
   />
-  <span class:list={["capitalize", { "text-3xl": isBig }]}
+  <span class:list={["capitalize text-sm", { "text-3xl text-blue-300": isBig }]}
     >#{id}
     {name}</span
   ></a
