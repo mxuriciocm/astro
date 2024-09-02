@@ -2,6 +2,8 @@
 import PokemonCard from "@components/PokemonCard.astro";
 import Layout from "@layouts/Layout.astro";
 import Title from "@components/Title.astro";
+import HeartFill from "@components/HeartFill.astro";
+import HeartOutline from "@components/HeartOutline.astro";
 
 import type { PokemonListResponse } from "../../interfaces/pokemon-list.response";
 import type { GetStaticPaths } from "astro";
@@ -30,15 +32,42 @@ const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprit
   image={imageSrc}
 >
   <section class="mt-10 mx-10 flex flex-col justify-center items-center">
-    <div>
+    <div class="flex">
+      <div>
+        <button
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          onclick="history.back()">Regresar</button
+        >
+        <Title>{name}</Title>
+      </div>
+
       <button
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        onclick="history.back()">Regresar</button
+        id="btn-favorite"
+        data-name={name}
+        data-id={id}
+        class="ml-4 hover:animate-pulse"
+        ><HeartOutline class="size-16" /><HeartFill
+          class="size-7 hidden"
+        /></button
       >
-      <Title>{name}</Title>
     </div>
 
     <PokemonCard name={name} url={url} isBig={true} />
     <audio controls src={audioSrc}></audio>
   </section>
 </Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => { // Eliminar errores con viewtransitions
+    //Recuperar datos con JavaScript
+    const btnFavorite = document.querySelector(
+      "#btn-favorite"
+    ) as HTMLButtonElement;
+    const name = btnFavorite.dataset.name;
+    const id = btnFavorite.dataset.id;
+
+    btnFavorite.addEventListener("click", () => {
+      console.log({ name, id });
+    });
+  });
+</script>
