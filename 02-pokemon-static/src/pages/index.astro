@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Title from "@components/Title.astro";
 import type { PokemonListResponse } from "../interfaces/pokemon-list.response";
 import PokemonCard from "../components/PokemonCard.astro";
 const title = "Pokemon Static | Home";
@@ -11,7 +12,7 @@ console.log(data);
 ---
 
 <Layout title={title}>
-  <h1 class="text-3xl text-white p-5">Listado de Pokemons</h1>
+  <Title>Lista de Pokemons</Title>
 
   <section
     aria-label="Listado de Pokemons"

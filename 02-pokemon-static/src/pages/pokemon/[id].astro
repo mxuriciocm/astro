@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Title from "@components/Title.astro";
 import PokemonCard from "@components/PokemonCard.astro";
 
 import type { GetStaticPaths } from "astro";
@@ -28,7 +29,7 @@ const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pok
   <section class="mt-10 mx-10 flex flex-col justify-center items-center">
     <div>
       <a href="/">Regresar</a>
-      <h1 class="text-3xl pt-4 capitalize">{name}</h1>
+      <Title>{name}</Title>
     </div>
 
     <PokemonCard name={name} url={url} isBig={true} />

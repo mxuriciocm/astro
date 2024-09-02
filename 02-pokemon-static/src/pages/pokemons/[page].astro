@@ -4,6 +4,7 @@ import type { PokemonListResponse } from "../../interfaces/pokemon-list.response
 
 import Layout from "@layouts/Layout.astro";
 import PokemonCard from "@components/PokemonCard.astro";
+import Title from "@components/Title.astro";
 const title = "Pokemon Static | Home";
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -18,7 +19,7 @@ const isDisabledNext = !page.url.next;
 ---
 
 <Layout title={title}>
-  <h1 class="text-3xl text-white p-5">Listado de Pokemons</h1>
+  <Title>Listado con paginación</Title>
 
   <section
     aria-label="Listado de Pokemons"
