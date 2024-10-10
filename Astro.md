@@ -268,3 +268,7 @@ import Layout from '@layouts/Layout.astro';
 ---
 
 ```
+
+## Colecciones
+
+Se crear en la ruta `src/` y con nombre reservado `content` es decir la ruta seria `src/content/`

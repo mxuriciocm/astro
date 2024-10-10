@@ -1,18 +1,15 @@
 ---
+import BlogPost from "../layouts/BlogPost.astro";
 import Layout from "../layouts/Layout.astro";
-import TypedBlogPost from "src/components/TypedBlogPost.astro";
 import { siteConfig } from "../config/site-config";
-import { getCollection } from "astro:content";
 
-const blogPost = await getCollection("blog");
-
-console.log(blogPost);
+const posts = await Astro.glob("./posts-old/*.{md,mdx}");
 ---
 
 <Layout title="Mauricio's Blog">
   <!-- component -->
   <section class="bg-white dark:bg-gray-900">
-    <div class="container px-6 mx-auto pt-5">
+    <div class="container px-6mx-auto">
       <h1
         class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white"
       >
@@ -20,7 +17,7 @@ console.log(blogPost);
       </h1>
 
       <div class="grid grid-cols-1 gap-8 mt-8 md:mt-8 md:grid-cols-2">
-        {blogPost.map((post) => <TypedBlogPost post={post} />)}
+        {posts.map((post) => <BlogPost {...post} />)}
       </div>
     </div>
   </section>
