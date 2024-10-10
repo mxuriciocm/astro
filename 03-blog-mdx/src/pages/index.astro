@@ -5,8 +5,6 @@ import { siteConfig } from "../config/site-config";
 import { getCollection } from "astro:content";
 
 const blogPost = await getCollection("blog");
-
-console.log(blogPost);
 ---
 
 <Layout title="Mauricio's Blog">
@@ -25,3 +23,5 @@ console.log(blogPost);
     </div>
   </section>
 </Layout>
+
+
