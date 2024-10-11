@@ -1,6 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import { Formatter } from "../utils/formatter";
 import type { CollectionEntry } from "astro:content";
+import { lazy } from "astro:schema";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -10,10 +12,14 @@ const { post } = Astro.props;
 ---
 
 <div class="lg:flex">
-  <img
+  <Image
     class="object-cover w-full h-56 rounded-lg lg:w-64"
     src={post.data.image}
     alt={post.data.title}
+    width={500}
+    height={500}
+    quality="low"
+    loading="lazy"
   />
 
   <div class="flex flex-col justify-between py-6 lg:mx-6">

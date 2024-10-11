@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import BlogLayout from "src/layouts/BlogLayout.astro";
 
@@ -14,12 +15,21 @@ const { post } = Astro.props;
 
 // Renderiza el contenido de los archivos md - mdx (Content) y retorna los headings (titulos) de los archivos
 const { Content, headings } = await post.render();
-console.log(headings)
 ---
 
 <BlogLayout title={post.data.title}>
   <h1 class="text-xs text-gray-500 mb-0">{post.data.title}</h1>
   <h4 class="text-md text-gray-400 mb-0">{post.data.author}</h4>
+
+  <Image
+    class="object-cover w-full rounded-md h-[250px]"
+    src={post.data.image}
+    alt={post.data.title}
+    width={600}
+    height={220}
+    quality="low"
+    loading="lazy"
+  />
 
   <h3>Tabla de contenidos</h3>
   <ol>
