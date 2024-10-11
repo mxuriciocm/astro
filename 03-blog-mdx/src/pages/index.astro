@@ -8,7 +8,6 @@ const blogPost = await getCollection("blog");
 ---
 
 <Layout title="Mauricio's Blog">
-  <!-- component -->
   <section class="bg-white dark:bg-gray-900">
     <div class="container px-6 mx-auto pt-5">
       <h1
@@ -17,11 +16,11 @@ const blogPost = await getCollection("blog");
         {siteConfig.title}
       </h1>
 
+      <a href="blog/1" class="text-gray-500 inline-block mt-2 hover:underline">Blog Paginado</a>
+
       <div class="grid grid-cols-1 gap-8 mt-8 md:mt-8 md:grid-cols-2">
         {blogPost.map((post) => <TypedBlogPost post={post} />)}
       </div>
     </div>
   </section>
 </Layout>
-
-
