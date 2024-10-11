@@ -4,7 +4,10 @@ import TypedBlogPost from "src/components/TypedBlogPost.astro";
 import { siteConfig } from "../config/site-config";
 import { getCollection } from "astro:content";
 
-const blogPost = await getCollection("blog");
+const blogPost = await getCollection(
+  "blog",
+  (post) => post.data.isDraft === false
+); // filter the posts
 ---
 
 <Layout title="Mauricio's Blog">
@@ -16,7 +19,14 @@ const blogPost = await getCollection("blog");
         {siteConfig.title}
       </h1>
 
-      <a href="blog/1" class="text-gray-500 inline-block mt-2 hover:underline">Blog Paginado</a>
+      <a
+        href="/blog/1"
+        class="text-gray-500 inline-block mt-2 hover:underline mr-5"
+        >Blog Paginado</a
+      >
+      <a href="/authors" class="text-gray-500 inline-block mt-2 hover:underline"
+        >Listado de autores</a
+      >
 
       <div class="grid grid-cols-1 gap-8 mt-8 md:mt-8 md:grid-cols-2">
         {blogPost.map((post) => <TypedBlogPost post={post} />)}
