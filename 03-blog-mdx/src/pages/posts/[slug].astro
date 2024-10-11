@@ -1,5 +1,7 @@
 ---
+import { Formatter } from "@utils/formatter";
 import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import BlogLayout from "src/layouts/BlogLayout.astro";
 
@@ -15,11 +17,27 @@ const { post } = Astro.props;
 
 // Renderiza el contenido de los archivos md - mdx (Content) y retorna los headings (titulos) de los archivos
 const { Content, headings } = await post.render();
+
+// Acceder a datos referencias con getEntry
+const author = await getEntry("author", post.data.author.id);
 ---
 
 <BlogLayout title={post.data.title}>
   <h1 class="text-xs text-gray-500 mb-0">{post.data.title}</h1>
-  <h4 class="text-md text-gray-400 mb-0 py-2">{post.data.author}</h4>
+  <div class="text-md text-gray-500 my-3 flex flex-row mt-2">
+    <Image
+      src={author.data.avatar}
+      alt={author.data.name}
+      class="rounded-full"
+      height={50}
+      width={50}
+    />
+    <div class="flex flex-col ml-5">
+      <a href="#">{author.data.name}</a>
+      <span class="text-xs text-gray-200">{Formatter.formatDate(post.data.date)}</span>
+    </div>
+  </div>
+  
 
   <Image
     class="object-cover w-full rounded-md h-[250px]"
