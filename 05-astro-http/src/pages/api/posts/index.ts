@@ -1,11 +1,48 @@
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 export const prerender = false; // using server side rendenring (SSR) only in this method
 
 export const GET: APIRoute = async ({ params, request }) => {
+  
+  const url = new URL(request.url)
+  const slug = url.searchParams.get('slug')
+
+  // A method using filter
+  // if (slug) {
+  //   const postBySlug = posts.filter(post => post.slug === slug)
+  //   if (postBySlug.length > 0){
+  //     return new Response(JSON.stringify(postBySlug), {
+  //       status: 200,
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+  //   }
+
+  //   return new Response(JSON.stringify({msg: `Post ${slug} not found`}), {
+  //     status: 404,
+  //     headers: { "Content-Type": "application/json" },
+  //   });
+  // } 
+
+  // A method using getEntry
+  if (slug){
+    const post = await getEntry('blog', slug)
+    if (post){
+      return new Response(JSON.stringify(post), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    return new Response(JSON.stringify({msg: `Post ${slug} not found`}), {
+      status: 404,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   const posts = await getCollection("blog");
+
   return new Response(JSON.stringify(posts), {
     status: 200,
-    headers: { "Context-Type": "application/json" },
+    headers: { "Content-Type": "application/json" },
   });
 };

@@ -228,6 +228,17 @@ Para definir las animaciones entre vistas, debes utilizar el atributo transition
 <img transition:name={`${name}-image`}>
 ```
 
+### Eventos del ciclo de vida 
+El enrutador `<ViewTransition />` proporciona varios eventos en el document durante la navegación. Estos eventos proporcionan hooks en el ciclo de vida de la navegación, permitiéndote realizar acciones como mostrar indicadores de que la nueva página está cargado, sobrescribe el comportamiento predeterminado y restablece el estado mientras se completa la navegación.
+
+El proceso de navegación implica una fase de preparación, cuando el nuevo contenido es cargado; una fase de intercambio de DOM, donde el contenido de la página antigua se sustituye por el de la nueva; y una fase de finalización donde los scripts son ejecutados, la carga se informa como completada y se realiza un trabajo de limpieza.
+
+- `astro:before-preparation`
+- `astro:after-preparation`
+- `astro:before-swap`
+- `astro:after-swap`
+- `astro:page-load`
+
 ## Paginación Estática (`paginate()`)
 
 Astro proporciona una función útil llamada paginate() que permite dividir grandes conjuntos de datos en páginas más pequeñas y manejables. Esto es especialmente útil para blogs, listas de productos, o cualquier otro contenido que necesite ser paginado.
@@ -267,6 +278,14 @@ import Footer from '@components/Footer.astro';
 import Layout from '@layouts/Layout.astro';
 ---
 
+```
+
+## Referencia a la API
+
+`Astro.url`: Un objeto URL construido a partir del valor actual de la string URL Astro.request.url. Útil para interactuar con propiedades individuales de la URL de la solicitud, como la ruta o el origen. Sirve para retornar la pagina actual en la que se encuentra el usuario.
+
+```js
+const currentPath = Astro.url.pathname;
 ```
 
 ## Colecciones
