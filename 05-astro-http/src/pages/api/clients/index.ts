@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ params, request }) => {
 export const POST: APIRoute = async ({ params, request }) => {
   try {
     const { id, ...body } = await request.json();
-    const response = await db.insert(Clients).values(body)
+    const response = await db.insert(Clients).values(body);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { "Content-Type": "application/json" },
