@@ -5,12 +5,13 @@ export const prerender = false;
 export const GET: APIRoute = async ({ params, request }) => {
   const { id } = params;
   const clients = await db.select().from(Clients);
-  const client = clients.filter((client) => client.id === +id!);
+  // const client = clients.filter((client) => client.id === +id!); Other solution for get a clientbyid
+  const client = await db.select().from(Clients).where(eq(Clients.id, +id!)) 
   return new Response(JSON.stringify(client), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });
-};
+};  
 
 export const PATCH: APIRoute = async ({ params, request }) => {
   const { id } = params;
