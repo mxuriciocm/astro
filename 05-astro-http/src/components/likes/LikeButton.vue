@@ -8,7 +8,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import confetti from "canvas-confetti";
+import debounce from "lodash.debounce";
 
 interface Props {
   postId: string;
@@ -19,7 +21,30 @@ const likeCount = ref(0);
 const likeClicks = ref(0);
 const isLoading = ref(true);
 
-const likePost = () => {};
+watch(
+  likeCount,
+  debounce(() => {
+    fetch(`/api/posts/likes/${props.postId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ likes: likeClicks.value }),
+    });
+    likeClicks.value = 0;
+  }, 500)
+);
+
+const likePost = () => {
+  likeCount.value++;
+  likeClicks.value++;
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: {
+      x: Math.random(),
+      y: Math.random() - 0.2,
+    },
+  });
+};
 
 const getCurrentLikes = async () => {
   const resp = await fetch(`/api/posts/likes/${props.postId}`);
