@@ -291,3 +291,7 @@ const currentPath = Astro.url.pathname;
 ## Colecciones
 
 Se crear en la ruta `src/` y con nombre reservado `content` es decir la ruta seria `src/content/`
+
+
+## Middleware 
+Una funcion que se llamara cada vez de que un Endpoint sera renderizado, da acceso a las cookies y a la request, se ejecutan solo en el lado del servidor
