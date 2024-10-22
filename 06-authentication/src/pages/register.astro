@@ -1,8 +1,7 @@
 ---
 import AuthLayout from "@/layouts/AuthLayout.astro";
-
-const email = Astro.cookies.get('email')?.value ?? '';
-const rememberMe = !!email
+const email = Astro.cookies.get("email")?.value ?? ""; // Obtener cookie guardada
+const rememberMe = !!email; // !! sirve para convertir a valor booleano, si existe el email estara en true caso contrario, false
 ---
 
 <AuthLayout title="Auth Register">
@@ -95,19 +94,26 @@ const rememberMe = !!email
 
 <script>
   import { actions } from "astro:actions";
+  import Swal from "sweetalert2";
 
   const form = document.querySelector("form");
-  const btnSubmit = document.querySelector("#btn-submit");
+  const btnSubmit = document.querySelector("btn-submit");
+
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     btnSubmit?.setAttribute("disabled", "disabled");
-
     const formData = new FormData(form);
-    const response = await actions.registerUser(formData);
 
-    if (response.error){
-      console.log(response.error.message)
+    const response = await actions.registerUser(formData); // el response tiene error y data
+    if (response.error) {
+      Swal.fire({
+        icon: "error",
+        title: "Credentials not valids",
+        text: response.error.message,
+      });
+      btnSubmit?.removeAttribute("disabled");
+      return;
     }
-    btnSubmit?.removeAttribute("disabled");
+    window.location.replace("/protected");
   });
 </script>
