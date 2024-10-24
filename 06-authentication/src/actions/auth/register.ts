@@ -1,7 +1,7 @@
 import { firebase } from "@/firebase";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 
 export const registerUser = defineAction({
   accept: "form",
@@ -43,9 +43,17 @@ export const registerUser = defineAction({
         emailVerified: user.emailVerified,
       };
 
-      // Actualizar el nombre
+      // Actualizar el nombre (displayName)
+
+
+      updateProfile(firebase.auth.currentUser!, {
+        displayName: input.name,
+      })
 
       // Verificar el correo electronico
+      await sendEmailVerification(firebase.auth.currentUser!, {
+        url: 'http://localhost:4321/protected?emailVerified=true'
+      })
 
       return userData;
     } catch (e) {

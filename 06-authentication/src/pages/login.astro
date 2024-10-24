@@ -63,6 +63,18 @@ const rememberMe = !!email;
           >
             Sign in
           </button>
+
+          <div class="flex flex-1 w-full my-3">
+            <div class="w-full border-t-2 border-gray-200"></div>
+          </div>
+
+          <button
+            type="button"
+            id="btn-google"
+            class="disabled:bg-gray-300 w-full flex justify-center bg-red-500 hover:bg-red-600 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+          >
+            Sign in with Google
+          </button>
         </div>
       </form>
       <div class="pt-5 text-center text-gray-400 text-xs">
@@ -82,11 +94,14 @@ const rememberMe = !!email;
 </AuthLayout>
 
 <script>
+  import { firebase } from "@/firebase";
   import { actions } from "astro:actions";
+  import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
   import Swal from "sweetalert2";
 
   const form = document.querySelector("form");
   const btnSubmit = document.querySelector("#btn-submit");
+  const btnGoogle = document.querySelector("#btn-google");
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -104,5 +119,30 @@ const rememberMe = !!email;
       return;
     }
     window.location.replace("/protected");
+  });
+
+  btnGoogle?.addEventListener("click", async () => {
+    btnGoogle?.setAttribute("disabled", "disabled");
+    const provider = new GoogleAuthProvider();
+
+    try {
+      // Paso 1: obtener la credenciales del lado del cliente
+      const credentials = await signInWithPopup(firebase.auth, provider);
+      
+      // Paso 2: verificar las credenciales en el backend
+      const response = await actions.loginGoogle(credentials);
+
+      if (response.error){
+        alert(response.error.message);
+        return;
+        btnSubmit?.removeAttribute("disabled");
+      }
+
+      btnGoogle.innerHTML = 'Redirect....';
+      window.location.replace('/protected')
+    } catch (e) {
+      console.log(e);
+      btnSubmit?.removeAttribute("disabled");
+    }
   });
 </script>
